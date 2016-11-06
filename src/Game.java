@@ -36,6 +36,10 @@ public class Game extends JPanel implements KeyListener, ActionListener{
 	public boolean gameOver, win;
 	private Timer clock;
 	
+
+	/****************************************************************************************************
+	 								CONSTRUCTOR
+	 ***************************************************************************************************/
 	public Game(){
 		// Add the Key Listener to this class to read from this classes
 		this.addKeyListener(this);
@@ -68,7 +72,10 @@ public class Game extends JPanel implements KeyListener, ActionListener{
 		this.repaint();
 				
 	}
-	
+
+	/****************************************************************************************************
+	 								RESTART
+	 ***************************************************************************************************/
 	public void restart(){
 		dist = 0;
 		forward = false;
@@ -96,7 +103,10 @@ public class Game extends JPanel implements KeyListener, ActionListener{
 		this.repaint();
 		
 	}
-	
+
+	/****************************************************************************************************
+	 								CHECK LOSE/WIN
+	 ***************************************************************************************************/
 	public void checkLose(){
 		if (gameOver || win) return;
 		
@@ -115,14 +125,21 @@ public class Game extends JPanel implements KeyListener, ActionListener{
 		}
 		
 	}
-	
+
+	/****************************************************************************************************
+	 								PLAY
+	 ***************************************************************************************************/
 	public void play(){
 		repaint();
+		clock.stop();
 		while(!forward){System.out.println("Waiting");}
 		clock.start();
 	}
 
 
+	/****************************************************************************************************
+	 								PAINT COMPONENT
+	 ***************************************************************************************************/
 	public void paintComponent(Graphics g){
 		g.setColor(Color.white);
 		g.fillRect(0, 0, SCREEN_W, SCREEN_H);
@@ -141,8 +158,8 @@ public class Game extends JPanel implements KeyListener, ActionListener{
 		}
 		
 		// paint background
-		road.paintIcon(null, g, 0, 0);
-		
+		road.paintIcon(null, g, SCREEN_W - (dist%SCREEN_W), 0);
+		road.paintIcon(null, g, SCREEN_W - (dist%SCREEN_W)-road.getIconWidth(), 0);
 		// paint all enemies on the screen
 //		System.out.println("Attempting to paint " + enemyList.size() + " things");
 		for (Character c: enemyList){
@@ -163,6 +180,9 @@ public class Game extends JPanel implements KeyListener, ActionListener{
 
 	
 
+	/****************************************************************************************************
+	 								KEY PRESSED/RELEASED
+	 ***************************************************************************************************/
 	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode();
 //		System.out.println("Key Typed");
@@ -205,6 +225,9 @@ public class Game extends JPanel implements KeyListener, ActionListener{
 	}
 	
 
+	/****************************************************************************************************
+	 								SORT
+	 ***************************************************************************************************/
 	public ArrayList<Enemy> sort(ArrayList<Enemy> list){
 		ArrayList<Enemy> sList = new ArrayList<Enemy>();
 		sList.add(list.get(0));
@@ -233,7 +256,9 @@ public class Game extends JPanel implements KeyListener, ActionListener{
 	public void keyTyped(KeyEvent e) {
 		
 	}
-
+	/****************************************************************************************************
+	 								ACTION PERFORMED
+	 ***************************************************************************************************/
 	public void actionPerformed(ActionEvent e) {
 		// Move enemies
 		for (Enemy en: enemyList){
