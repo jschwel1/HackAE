@@ -12,7 +12,7 @@ public class Enemy extends Character{
 	ImageIcon img;
 	
 	public Enemy(Point loc){
-		super(loc, new ImageIcon("src/Goomba.jpg"), new Point(-1, 0));
+		super(loc, new ImageIcon("src/ENEMY.png"), new Point(-1, 0));
 	}
 	
 

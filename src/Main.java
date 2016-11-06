@@ -13,7 +13,7 @@ public class Main {
 		frame.addKeyListener(g);
 		window.add(g);
 		
-		frame.setSize(Game.SCREEN_W, Game.SCREEN_H+30);
+		frame.setSize(Game.SCREEN_W, Game.SCREEN_H+29);
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
 		frame.revalidate();

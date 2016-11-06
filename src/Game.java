@@ -20,9 +20,9 @@ public class Game extends JPanel implements KeyListener, ActionListener{
 	private final static int ROAD_H = 470;
 	private final static int HOUSES_H = 100;
 	private final static int TOTAL_DIST = 5000;
-	private final static int NUM_ENEMIES = 10;
+	private final static int NUM_ENEMIES = 20;
 	private final static int FPS = 30;	
-	private final static ImageIcon road = new ImageIcon("src/road.jpg");
+	private final static ImageIcon road = new ImageIcon("src/BACKGROUND.png");
 	
 	// global dynamic variablees
 	private int dist;
@@ -57,12 +57,9 @@ public class Game extends JPanel implements KeyListener, ActionListener{
 		
 		// randomly generate enemies
 		for (int i = 0; i < NUM_ENEMIES; i++){
-			// first and last 100 pixels are safe
+			// first and last screens are safe
 			int x = (int)(Math.random()*(this.TOTAL_DIST-SCREEN_W) + 2*SCREEN_W);
-			int l = (int)(Math.random()*3); // holds which of the three lanes
-			int y = (int)(Math.random()*150); // Lanes are 150 px tall
-			y = 100 + 10*l + y; // 100 reserved for houses, 10*l for the lines in the road, and 
-								// height within the lane;
+			int y = (int)(Math.random()*(SCREEN_H-150))+100; //
 			
 			enemyList.add(new Enemy(new Point(x,y)));
 		}
@@ -78,8 +75,6 @@ public class Game extends JPanel implements KeyListener, ActionListener{
 	 ***************************************************************************************************/
 	public void restart(){
 		dist = 0;
-		forward = false;
-		backward = false;
 //		things = new ArrayList<Character>();
 		enemyList = new ArrayList<Enemy>();
 		gameOver = false;
@@ -90,12 +85,9 @@ public class Game extends JPanel implements KeyListener, ActionListener{
 		// randomly generate enemies
 		enemyList.clear();
 		for (int i = 0; i < NUM_ENEMIES; i++){
-			// first and last 100 pixels are safe
+			// first and last screens are safe
 			int x = (int)(Math.random()*(this.TOTAL_DIST-SCREEN_W) + 2*SCREEN_W);
-			int l = (int)(Math.random()*3); // holds which of the three lanes
-			int y = (int)(Math.random()*150); // Lanes are 150 px tall
-			y = 100 + 10*l + y; // 100 reserved for houses, 10*l for the lines in the road, and 
-								// height within the lane;
+			int y = (int)(Math.random()*(SCREEN_H-150))+100; //
 			
 			enemyList.add(new Enemy(new Point(x,y)));
 		}
@@ -111,7 +103,7 @@ public class Game extends JPanel implements KeyListener, ActionListener{
 		if (gameOver || win) return;
 		
 		if (player.getXLoc() < dist) gameOver = true;
-		if (dist >= TOTAL_DIST) win = true;
+		if (player.getXLoc() >= TOTAL_DIST) win = true;
 		
 		// check for collisions
 		Rectangle pr = new Rectangle(player.getXLoc(), player.getYLoc(), player.getImage().getIconWidth(), player.getImage().getIconHeight());
@@ -171,11 +163,17 @@ public class Game extends JPanel implements KeyListener, ActionListener{
 		}
 		player.getImage().paintIcon(null, g, player.getXLoc() - dist, player.getYLoc());
 		
+		if (TOTAL_DIST - dist < SCREEN_W*2){
+			g.setColor(Color.black);
+			g.fillRect(TOTAL_DIST-dist, 0, SCREEN_W, SCREEN_H);
+		}
+		
+		
 		// completion bar
 		g.setColor(Color.black);
 		g.fillRect(0, SCREEN_H-20, SCREEN_W, 20);
-		g.setColor(Color.green);
-		g.fillRect(1, SCREEN_H-19, (int)((SCREEN_W-1)*((double)dist/(double)TOTAL_DIST)), 18);
+		g.setColor(Color.cyan);
+		g.fillRect(1, SCREEN_H-19, (int)((SCREEN_W-1)*((double)player.getXLoc()/(double)TOTAL_DIST)), 18);
 	}
 
 	
@@ -271,7 +269,7 @@ public class Game extends JPanel implements KeyListener, ActionListener{
 			//if (en.getXLoc() < dist-100) enemyList.remove(en);
 			
 		}
-		System.out.println(enemyList.get(0).toString() + "  Dist:" + dist);		
+//		System.out.println(enemyList.get(0).toString() + "  Dist:" + dist);		
 		// move player	
 		int x, y;
 		if (forward == backward) x = 0;

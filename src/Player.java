@@ -10,7 +10,7 @@ public class Player extends Character{
 	ImageIcon img;
 	
 	public Player(Point loc){
-		super(loc, new ImageIcon("src/Mario.png"), new Point(3, 1));
+		super(loc, new ImageIcon("src/Dude.png"), new Point(3, 1));
 		
 		loc = new Point(super.getXLoc(), super.getYLoc());
 	}
