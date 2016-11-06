@@ -19,11 +19,12 @@ public class Game extends JPanel implements KeyListener, ActionListener{
 	public final static int SCREEN_W = 900;
 	private final static int ROAD_H = 470;
 	private final static int HOUSES_H = 100;
-	private final static int TOTAL_DIST = 5000;
+	private final static int TOTAL_DIST = 10000;
 	private final static int NUM_ENEMIES = 20;
 	private final static int FPS = 30;	
 	private final static ImageIcon road = new ImageIcon(Game.class.getResource("/BACKGROUND.png"));
-	
+	private final static ImageIcon END_IMAGE = new ImageIcon(Game.class.getResource("/FINISH.png"));
+	private final static ImageIcon GAMEOVER = new ImageIcon(Game.class.getResource("/DEAD.png"));
 	// global dynamic variablees
 	private int dist;
 	private boolean forward;
@@ -58,7 +59,7 @@ public class Game extends JPanel implements KeyListener, ActionListener{
 		// randomly generate enemies
 		for (int i = 0; i < NUM_ENEMIES; i++){
 			// first and last screens are safe
-			int x = (int)(Math.random()*(this.TOTAL_DIST-SCREEN_W) + 2*SCREEN_W);
+			int x = (int)(Math.random()*(this.TOTAL_DIST-2*SCREEN_W) + SCREEN_W);
 			int y = (int)(Math.random()*(SCREEN_H-150))+100; //
 			
 			enemyList.add(new Enemy(new Point(x,y)));
@@ -86,7 +87,7 @@ public class Game extends JPanel implements KeyListener, ActionListener{
 		enemyList.clear();
 		for (int i = 0; i < NUM_ENEMIES; i++){
 			// first and last screens are safe
-			int x = (int)(Math.random()*(this.TOTAL_DIST-SCREEN_W) + 2*SCREEN_W);
+			int x = (int)(Math.random()*(this.TOTAL_DIST- 2*SCREEN_W) + SCREEN_W);
 			int y = (int)(Math.random()*(SCREEN_H-150))+100; //
 			
 			enemyList.add(new Enemy(new Point(x,y)));
@@ -136,18 +137,7 @@ public class Game extends JPanel implements KeyListener, ActionListener{
 		g.setColor(Color.white);
 		g.fillRect(0, 0, SCREEN_W, SCREEN_H);
 		
-		if (gameOver){
-			g.setFont(new Font(Font.SERIF, Font.BOLD, 100));
-			g.setColor(Color.green);
-			g.drawString("GAME OVER!", 100, 300);
-			return;
-		}
-		if (win){
-			g.setFont(new Font(Font.SERIF, Font.BOLD, 100));
-			g.setColor(Color.green);
-			g.drawString("Congrats!", 100, 300);
-			return;
-		}
+
 		
 		// paint background
 		road.paintIcon(null, g, SCREEN_W - (dist%SCREEN_W), 0);
@@ -165,7 +155,7 @@ public class Game extends JPanel implements KeyListener, ActionListener{
 		
 		if (TOTAL_DIST - dist < SCREEN_W*2){
 			g.setColor(Color.black);
-			g.fillRect(TOTAL_DIST-dist, 0, SCREEN_W, SCREEN_H);
+			END_IMAGE.paintIcon(null, g, TOTAL_DIST-dist, 0);
 		}
 		
 		
@@ -174,6 +164,18 @@ public class Game extends JPanel implements KeyListener, ActionListener{
 		g.fillRect(0, SCREEN_H-20, SCREEN_W, 20);
 		g.setColor(Color.cyan);
 		g.fillRect(1, SCREEN_H-19, (int)((SCREEN_W-1)*((double)player.getXLoc()/(double)TOTAL_DIST)), 18);
+		
+		if (gameOver){
+			
+			GAMEOVER.paintIcon(null, g, 0, 0);
+			return;
+		}
+		if (win){
+			g.setFont(new Font(Font.SERIF, Font.BOLD, 100));
+			g.setColor(Color.green);
+			g.drawString("Congrats!", 100, 300);
+			return;
+		}
 	}
 
 	
@@ -198,6 +200,7 @@ public class Game extends JPanel implements KeyListener, ActionListener{
 		}
 		
 		if (code == KeyEvent.VK_SPACE && (gameOver || win)){
+			
 			restart();
 
 		}
@@ -258,6 +261,10 @@ public class Game extends JPanel implements KeyListener, ActionListener{
 	 								ACTION PERFORMED
 	 ***************************************************************************************************/
 	public void actionPerformed(ActionEvent e) {
+		if (gameOver || win) {
+			repaint();
+			return;
+		}
 		// Move enemies
 		for (Enemy en: enemyList){
 			// if it's on the screen (or near the edges

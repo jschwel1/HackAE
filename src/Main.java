@@ -6,7 +6,7 @@ import javax.swing.JPanel;
 
 public class Main {
 	public static void main(String args[]){
-		JFrame frame = new JFrame("Get to the Polls");
+		JFrame frame = new JFrame("Citizen");
 		Container window = frame.getContentPane();
 		Game g = new Game();
 		window.addKeyListener(g);
