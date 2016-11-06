@@ -2,25 +2,20 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Point;
 
-import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
-public class Enemy {
+public class Enemy extends Character{
 	
 	
 	Point speed;
 	Point loc;
-	Icon img;
+	ImageIcon img;
 	
-	public Enemy(Point speed, Point loc, Icon img){
-		this.speed = speed;
-		this.loc = loc;
-		this.img = img;
-		
+	public Enemy(Point loc){
+		super(loc, new ImageIcon("src/Goomba.jpg"), new Point(-1, 0));
 	}
 	
-	public void move(){
-		loc.setLocation(loc.getX()+speed.getX(), loc.getX() + speed.getY());
-	}
+
 	
 	public void paintEnemy(Component c, Graphics g){
 		img.paintIcon(c, g, (int)loc.getX(), (int)loc.getY());
