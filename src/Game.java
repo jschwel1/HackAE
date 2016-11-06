@@ -22,7 +22,7 @@ public class Game extends JPanel implements KeyListener, ActionListener{
 	private final static int TOTAL_DIST = 5000;
 	private final static int NUM_ENEMIES = 20;
 	private final static int FPS = 30;	
-	private final static ImageIcon road = new ImageIcon("src/BACKGROUND.png");
+	private final static ImageIcon road = new ImageIcon(Game.class.getResource("/BACKGROUND.png"));
 	
 	// global dynamic variablees
 	private int dist;
@@ -103,7 +103,7 @@ public class Game extends JPanel implements KeyListener, ActionListener{
 		if (gameOver || win) return;
 		
 		if (player.getXLoc() < dist) gameOver = true;
-		if (player.getXLoc() >= TOTAL_DIST) win = true;
+		if (player.getXLoc()+player.getImage().getIconWidth() >= TOTAL_DIST) win = true;
 		
 		// check for collisions
 		Rectangle pr = new Rectangle(player.getXLoc(), player.getYLoc(), player.getImage().getIconWidth(), player.getImage().getIconHeight());
